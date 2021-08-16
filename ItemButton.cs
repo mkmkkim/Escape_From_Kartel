@@ -5,7 +5,9 @@ using UnityEngine.UI;
 public class ItemButton : MonoBehaviour
 {
     // Start is called before the first frame update
-
+    List<int> space1 = EscapeGM.Instance.space1GetedItemList;
+    public Button door1;
+    public Button door2;
     Button button;
     Image itemIcon;
     int itemNo;
@@ -36,6 +38,17 @@ public class ItemButton : MonoBehaviour
     
     public void UseItem()
     {
-
+        button.interactable = true;
+        foreach(int itemNo in space1)
+        {
+            if (space1.Contains(1))
+            {
+                door1.interactable = true;
+            }
+            else if (space1.Contains(2))
+            {
+                door2.interactable = true;
+            }
+        }
     }
 }
