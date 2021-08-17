@@ -5,12 +5,12 @@ using UnityEngine.UI;
 public class ItemButton : MonoBehaviour
 {
     // Start is called before the first frame update
-    List<int> space1 = EscapeGM.Instance.space1GetedItemList;
-    public Button door1;
-    public Button door2;
-    Button button;
+
+    public Button button;
+    public Button door5F;
     Image itemIcon;
-    int itemNo;
+   public List<int> space1;
+    public int itemNo;
 
     void Awake()
     {
@@ -19,36 +19,33 @@ public class ItemButton : MonoBehaviour
     }
     public void ItemButtonOn(int iconNo)
     {
+        Debug.Log("ItemButtonON확인");
         button.interactable = true;
         itemNo = iconNo;
-        itemIcon.sprite = EscapeGM.Instance.itemSprite[iconNo];
+        itemIcon.sprite = GameManager.Instance.itemSprite[iconNo];
     }
 
     public void ItemButtonInit()
     {
         button.interactable = false;
         itemNo = 0;
-        itemIcon.sprite = EscapeGM.Instance.itemSprite[0];
+        itemIcon.sprite = GameManager.Instance.itemSprite[0];
     }
     //void Start()
     //{
     //    button = GetComponent<Button>();
     //    itemIcon = transform.GetChild(0).GetComponent<Image>();
     //}
-    
-    public void UseItem()
+
+    public void DoorUse()
     {
+        Debug.Log("DoorUse확인");
         button.interactable = true;
-        foreach(int itemNo in space1)
+/*        List<int> space1 = GameManager.Instance.space1GetedItemList;*/
+        if (itemNo == 1)
         {
-            if (space1.Contains(1))
-            {
-                door1.interactable = true;
-            }
-            else if (space1.Contains(2))
-            {
-                door2.interactable = true;
-            }
+            Debug.Log("dooruseloof확인");
+            door5F.interactable = true;
         }
     }
 }
