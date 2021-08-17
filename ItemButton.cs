@@ -7,11 +7,12 @@ public class ItemButton : MonoBehaviour
     // Start is called before the first frame update
 
     public Button button;
+    public Button cardtag;
     public Button door5F;
     Image itemIcon;
-   public List<int> space1;
+    public List<int> space1;
     public int itemNo;
-
+    public int count;
     void Awake()
     {
         button = GetComponent<Button>();
@@ -37,15 +38,32 @@ public class ItemButton : MonoBehaviour
     //    itemIcon = transform.GetChild(0).GetComponent<Image>();
     //}
 
-    public void DoorUse()
+    public void CardUse()
     {
-        Debug.Log("DoorUse확인");
+        button.GetComponent<Image>().color = Color.cyan;
+  /*      itemIcon.GetComponent<Image>().color = Color.cyan;*/
+        count += 1;
         button.interactable = true;
-/*        List<int> space1 = GameManager.Instance.space1GetedItemList;*/
+        /*        List<int> space1 = GameManager.Instance.space1GetedItemList;*/
+        Debug.Log("CardUse확인");
         if (itemNo == 1)
         {
-            Debug.Log("dooruseloof확인");
-            door5F.interactable = true;
+            if (count %2== 1) { 
+                Debug.Log("CardUseloop확인");
+                cardtag.interactable = true;
+            }
+            else
+            {
+                count = 0;
+                button.GetComponent<Image>().color = Color.white;
+                itemIcon.GetComponent<Image>().color = Color.white;
+                cardtag.interactable = false;
+            }
         }
+    }
+
+    public void DoorUse()
+    {
+        door5F.interactable = true;
     }
 }
