@@ -13,6 +13,8 @@ public class ItemButton : MonoBehaviour
     public List<int> space1;
     public int itemNo;
     public int count;
+    
+    
     void Awake()
     {
         button = GetComponent<Button>();
@@ -41,6 +43,7 @@ public class ItemButton : MonoBehaviour
     public void CardUse()
     {
         button.GetComponent<Image>().color = Color.cyan;
+            /*GameManager.Instance.colors[1];*/
   /*      itemIcon.GetComponent<Image>().color = Color.cyan;*/
         count += 1;
         button.interactable = true;
@@ -62,7 +65,7 @@ public class ItemButton : MonoBehaviour
         }
     }
 
-    public void DoorUse()
+    public void DoorUse5()
     {
         door5F.interactable = true;
     }
