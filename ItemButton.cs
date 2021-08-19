@@ -42,8 +42,7 @@ public class ItemButton : MonoBehaviour
 
     public void CardUse()
     {
-        button.GetComponent<Image>().color = Color.cyan;
-            /*GameManager.Instance.colors[1];*/
+        button.GetComponent<Image>().color = GameManager.Instance.colors[1];
   /*      itemIcon.GetComponent<Image>().color = Color.cyan;*/
         count += 1;
         button.interactable = true;
