@@ -8,9 +8,8 @@ public class TouchArea : MonoBehaviour
     Image touchArea;
     public int spaceNo;
     public int itemNo;
-    public string dialog_Nor;
+    public int interactNo;
     public string dialog_GetItem;
-    public string dialog_GetedItem;
 
 
     // Start is called before the first frame update
@@ -22,9 +21,21 @@ public class TouchArea : MonoBehaviour
 
     public void TouchedButton()
     {
-        if (EscapeGM.Instance.isGameStart)
+        if (GameManager.Instance.isGameStart)
         {
-            EscapeGM.Instance.TouchCheck(spaceNo, itemNo, dialog_Nor, dialog_GetItem, dialog_GetedItem);
+            GameManager.Instance.TouchCheck(spaceNo, itemNo, dialog_GetItem);
+            this.gameObject.SetActive(false);
+        }
+    }
+    public void InteractButton()
+    {
+        if (!GameManager.Instance.isItemSelected)
+        {
+            GameManager.Instance.InteractCheck(0);
+        }
+        else
+        {
+            GameManager.Instance.InteractCheck(interactNo);
         }
     }
 }
