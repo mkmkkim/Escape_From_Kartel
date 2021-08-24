@@ -6,22 +6,35 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     static GameManager instance = null;
+    public int currentItemNo;
     public int currentSpaceNo;
+    public int currentInteractNo;
     public bool isGameStart;
+    public bool isItemSelected;
     public Image getItemIamge;
     public GameObject[] space; // 공간을 배열로 저장함 특이하게0을 페이드인/아웃으로 설정하려 함
     public Sprite[] itemSprite;// 아이템 이미지 모음
+    public Image[] before;
     public int[] space1GetItem;// 얻어야할 아이템
-    public List<int> space1GetedItemList;// 얻어낸 아이템 리스트
+    public List<int> space1GotItemList;// 얻어낸 아이템 리스트
+
+    public int[] space2GetItem;// 얻어야할 아이템
+    public List<int> space2GotItemList;// 얻어낸 아이템 리스트
+
+    public int[] space3GetItem;// 얻어야할 아이템
+    public List<int> space3GotItemList;// 얻어낸 아이템 리스트
+
+    public int[] space4GetItem;// 얻어야할 아이템
+    public List<int> space4GotItemList;// 얻어낸 아이템 리스트
+
+    public int[] space5GetItem;// 얻어야할 아이템
+    public List<int> space5GotItemList;// 얻어낸 아이템 리스트
     public GameObject dial;
     public Color32[] colors;
     //<UGUI> - Text 창
     public TalkingGUI talkGUI; // 메시지가 나가는 곳
     public bool isTexting;
     //<UGUI> - 아이템 창
-    string dialog_Nor;// 아이템 획득 전
-    string dialog_GetItem;// 아이템 획득 시
-    string dialog_GetedItem;//아이템 획득 후
 
     public ItemButton[] itemButton;//고정되는 방식으로 n개가 들어감
 
@@ -48,63 +61,50 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < itemButton.Length; i++)
         {
             itemButton[i].ItemButtonInit();
-            itemButton[i].space1 = GameManager.Instance.space1GetedItemList;
         }
     }
     private void Update()
     {
-        dialcheck();
+        Dialcheck();
     }
 
     int getItemCount;
-    public void TouchCheck(int spaceNo, int itemNo, string normal, string getItem, string getedItem)
+    public void TouchCheck(int spaceNo, int itemNo, string getItem)
     {
-        Debug.Log("1버튼입력확인");
-
         getItemCount = 0;
-        Debug.Log("2버튼입력확인");
         if (isTexting) return;
-        Debug.Log("3버튼입력확인");
         if (itemNo == 0)
         {
-            dialog_Nor = normal;
             getItemIamge.gameObject.SetActive(false);
-            Debug.Log("4버튼입력확인");
-            TalkTexting(normal);
         }
         else
         {
             if (spaceNo == currentSpaceNo)
             {
-                Debug.Log("5버튼입력확인");
                 switch (spaceNo)
                 {
                     case 1:
-                        if (space1GetedItemList.Count != 0)
+                        if (space1GotItemList.Count != 0)
                         {
-                            for (int i = 0; i < space1GetedItemList.Count; i++)
+                            for (int i = 0; i < space1GotItemList.Count; i++)
                             {
-                                if (space1GetedItemList[i] == itemNo)
+                                if (space1GotItemList[i] == itemNo)
                                 {
                                     getItemCount++;
                                 }
                             }
 
-                            Debug.Log("6버튼입력확인" + getItemCount);
                             if (getItemCount == 0)// 중복된 것이 없으니 등록
                             {
-                                space1GetedItemList.Add(itemNo);
+                                space1GotItemList.Add(itemNo);
                                 getItemIamge.sprite = itemSprite[itemNo];
                                 getItemIamge.gameObject.SetActive(true);
-                                int crNo = space1GetedItemList.Count - 1;
-                                Debug.Log("crNo" + crNo);
-                                GameManager.Instance.itemButton[crNo].ItemButtonOn(space1GetedItemList[crNo]);
-                                Debug.Log("7버튼입력확인");
+                                int crNo = space1GotItemList.Count - 1;
+                                GameManager.Instance.itemButton[crNo].ItemButtonOn(space1GotItemList[crNo]);
                                 TalkTexting(getItem);
                             }
                             else
                             {
-                                TalkTexting(getedItem);
                                 getItemIamge.gameObject.SetActive(false);
                             }
                             break;
@@ -113,10 +113,120 @@ public class GameManager : MonoBehaviour
                         {
                             getItemIamge.sprite = itemSprite[itemNo];
                             getItemIamge.gameObject.SetActive(true);
-                            space1GetedItemList.Add(itemNo);
-                            int crNo = space1GetedItemList.Count - 1;
+                            space1GotItemList.Add(itemNo);
+                            int crNo = space1GotItemList.Count - 1;
+                            GameManager.Instance.itemButton[crNo].ItemButtonOn(space1GotItemList[crNo]);
+                            TalkTexting(getItem);
+                        }
+                        break;
+
+                    case 2:
+                        if (space2GotItemList.Count != 0)
+                        {
+                            for (int i = 0; i < space2GotItemList.Count; i++)
+                            {
+                                if (space2GotItemList[i] == itemNo)
+                                {
+                                    getItemCount++;
+                                }
+                            }
+
+                            if (getItemCount == 0)// 중복된 것이 없으니 등록
+                            {
+                                space2GotItemList.Add(itemNo);
+                                getItemIamge.sprite = itemSprite[itemNo];
+                                getItemIamge.gameObject.SetActive(true);
+                                int crNo = space2GotItemList.Count - 1;
+                                GameManager.Instance.itemButton[crNo].ItemButtonOn(space2GotItemList[crNo]);
+
+                                TalkTexting(getItem);
+                            }
+                            else
+                            {
+                                getItemIamge.gameObject.SetActive(false);
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            getItemIamge.sprite = itemSprite[itemNo];
+                            getItemIamge.gameObject.SetActive(true);
+                            space2GotItemList.Add(itemNo);
+                            int crNo = space2GotItemList.Count - 1;
+                            GameManager.Instance.itemButton[crNo].ItemButtonOn(space2GotItemList[crNo]);
+                            TalkTexting(getItem);
+                        }
+                        break;
+                    case 3:
+                        if (space3GotItemList.Count != 0)
+                        {
+                            for (int i = 0; i < space3GotItemList.Count; i++)
+                            {
+                                if (space3GotItemList[i] == itemNo)
+                                {
+                                    getItemCount++;
+                                }
+                            }
+
+                            if (getItemCount == 0)// 중복된 것이 없으니 등록
+                            {
+                                space3GotItemList.Add(itemNo);
+                                getItemIamge.sprite = itemSprite[itemNo];
+                                getItemIamge.gameObject.SetActive(true);
+                                int crNo = space3GotItemList.Count - 1;
+                                GameManager.Instance.itemButton[crNo].ItemButtonOn(space3GotItemList[crNo]);
+                                TalkTexting(getItem);
+                            }
+                            else
+                            {
+                                getItemIamge.gameObject.SetActive(false);
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            getItemIamge.sprite = itemSprite[itemNo];
+                            getItemIamge.gameObject.SetActive(true);
+                            space3GotItemList.Add(itemNo);
+                            int crNo = space3GotItemList.Count - 1;
+                            GameManager.Instance.itemButton[crNo].ItemButtonOn(space3GotItemList[crNo]);
+                            TalkTexting(getItem);
+                        }
+                        break;
+                    case 4:
+                        if (space4GotItemList.Count != 0)
+                        {
+                            for (int i = 0; i < space4GotItemList.Count; i++)
+                            {
+                                if (space4GotItemList[i] == itemNo)
+                                {
+                                    getItemCount++;
+                                }
+                            }
+
+                            if (getItemCount == 0)// 중복된 것이 없으니 등록
+                            {
+                                space4GotItemList.Add(itemNo);
+                                getItemIamge.sprite = itemSprite[itemNo];
+                                getItemIamge.gameObject.SetActive(true);
+                                int crNo = space4GotItemList.Count - 1;
+                                GameManager.Instance.itemButton[crNo].ItemButtonOn(space4GotItemList[crNo]);
+                                TalkTexting(getItem);
+                            }
+                            else
+                            {
+                                getItemIamge.gameObject.SetActive(false);
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            getItemIamge.sprite = itemSprite[itemNo];
+                            getItemIamge.gameObject.SetActive(true);
+                            space4GotItemList.Add(itemNo);
+                            int crNo = space4GotItemList.Count - 1;
                             Debug.Log("crNo" + crNo);
-                            GameManager.Instance.itemButton[crNo].ItemButtonOn(space1GetedItemList[crNo]);
+                            GameManager.Instance.itemButton[crNo].ItemButtonOn(space4GotItemList[crNo]);
                             TalkTexting(getItem);
                         }
                         break;
@@ -124,15 +234,86 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-
-
+    public void InteractCheck(int interactNo)
+    {
+        currentInteractNo = interactNo;
+        if (currentItemNo == currentInteractNo)
+        {
+            switch (currentInteractNo)
+            {
+                case 0:
+                    break;
+                case 1:
+                    CardUse();
+                    break;
+                case 2:
+                    WaterBasketUse();
+                    break;
+                case 3:
+                    DduruUse();
+                    break;
+                case 4:
+                    FillSink();
+                    break;
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                itemButton[i].GetComponent<Image>().color = Color.white;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                itemButton[i].GetComponent<Image>().color = Color.white;
+            }
+        }
+    }
+    public GameObject handle;
+    public GameObject clear;
+    public void CardUse()
+    {
+        handle.SetActive(false);
+        before[0].sprite = GameManager.Instance.changeImage[0];
+        before[0].GetComponent<RectTransform>().sizeDelta = new Vector2(255, 275);
+        before[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(51, -49, 0);
+        clear.SetActive(true);
+    }
+    public GameObject waterbasket;
+    public void WaterBasketUse()
+    {
+        before[1].sprite =changeImage[0];
+        before[1].GetComponent<RectTransform>().anchoredPosition = new Vector3(147, 103, 0);
+        before[1].GetComponent<RectTransform>().sizeDelta = new Vector2(800, 800);
+        waterbasket.SetActive(true);
+    }
+    public GameObject keyActive;
+    public void FillSink()
+    {
+        before[2].sprite = GameManager.Instance.changeImage[1];
+        before[2].GetComponent<RectTransform>().sizeDelta = new Vector2(900, 650);
+        before[2].GetComponent<RectTransform>().anchoredPosition = new Vector3(-60, -100, 0);
+        keyActive.SetActive(true);
+    }
+    public GameObject water;
+    public GameObject key;
+    public GameObject dirty;
+    public void DduruUse()
+    {
+        before[2].sprite = GameManager.Instance.changeImage[4];
+        before[2].GetComponent<RectTransform>().sizeDelta = new Vector2(900, 650);
+        before[2].GetComponent<RectTransform>().anchoredPosition = new Vector3(-60, -100, 0);
+        water.SetActive(true);
+        key.SetActive(true);
+        dirty.SetActive(true);
+    }
+   
     public void TalkTexting(string dial)
     {
         talkGUI.TalkText(dial);
         talkGUI.gameObject.SetActive(true);
         isTexting = true;
-        Invoke("TalkGUIOff", 5f);
+        Invoke("TalkGUIOff", 1.5f);
     }
 
     void TalkGUIOff()
@@ -142,16 +323,13 @@ public class GameManager : MonoBehaviour
         talkGUI.gameObject.SetActive(false);
     }
 
-
-    void ItemButtonOn()
-    {
-
-    }
     public int buttoncnt1;
     public int buttoncnt2;
     public int buttoncnt3;
     public int buttoncnt4;
-    void dialcheck()
+    public bool isDialClear;
+    public GameObject dialActivate;
+    void Dialcheck()
     {
         if (buttoncnt1 % 24 == 5)
         {
@@ -162,14 +340,12 @@ public class GameManager : MonoBehaviour
                     if (buttoncnt4 % 6 == 4)
                     {
                         dial.SetActive(false);
+                        dialActivate.SetActive(false);
+                        isDialClear = true;
                     }
                 }
             }
         }
     }
-    public int[] space2GetItem;// 얻어야할 아이템
-    public int[] space3GetItem;// 얻어야할 아이템
-    public int[] space4GetItem;// 얻어야할 아이템
-    public int[] space5GetItem;// 얻어야할 아이템
 
 }
