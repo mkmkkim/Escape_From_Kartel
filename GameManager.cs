@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     static GameManager instance = null;
@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
     public ItemButton[] itemButton;//고정되는 방식으로 n개가 들어감
 
     public Sprite[] changeImage;
+    public AudioSource audiosource;
+  
     public static GameManager Instance//실제 접근
     {
         get
@@ -57,11 +59,20 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-        currentSpaceNo = Mathf.Max(1, PlayerPrefs.GetInt("CurretSpaceNo"));//최소 스테이지 번호는 1이다.
+        if (PlayerPrefs.GetInt("isDialClear") ==1)
+        {
+           isDialClear = true;
+        }
+        if (SceneManager.GetActiveScene().name == "4FScene" && isDialClear == true)// 씬번호와 클리어가 참이면 해당 데이터로 실행
+        {
+            dial1.SetActive(true);
+            isDialClear = false;
+        }
         for (int i = 0; i < itemButton.Length; i++)
         {
             itemButton[i].ItemButtonInit();
         }
+        currentSpaceNo = Mathf.Max(1, PlayerPrefs.GetInt("CurretSpaceNo"));//최소 스테이지 번호는 1이다.
     }
     private void Update()
     {
@@ -71,6 +82,10 @@ public class GameManager : MonoBehaviour
     int getItemCount;
     public void TouchCheck(int spaceNo, int itemNo, string getItem)
     {
+     //   Debug.Log("터치 아이템 = " + gameObject.name);
+        Debug.Log("space" + spaceNo);
+        Debug.Log("item" + itemNo);
+        Debug.Log("getItem" + getItem);
         getItemCount = 0;
         if (isTexting) return;
         if (itemNo == 0)
@@ -81,6 +96,7 @@ public class GameManager : MonoBehaviour
         {
             if (spaceNo == currentSpaceNo)
             {
+
                 switch (spaceNo)
                 {
                     case 1:
@@ -98,6 +114,7 @@ public class GameManager : MonoBehaviour
                             {
                                 space1GotItemList.Add(itemNo);
                                 getItemIamge.sprite = itemSprite[itemNo];
+                                getItemIamge.GetComponent<Image>().SetNativeSize();
                                 getItemIamge.gameObject.SetActive(true);
                                 int crNo = space1GotItemList.Count - 1;
                                 GameManager.Instance.itemButton[crNo].ItemButtonOn(space1GotItemList[crNo]);
@@ -134,6 +151,7 @@ public class GameManager : MonoBehaviour
                             if (getItemCount == 0)// 중복된 것이 없으니 등록
                             {
                                 space2GotItemList.Add(itemNo);
+                                Debug.Log("space2GotItemList.Add"+ itemNo);
                                 getItemIamge.sprite = itemSprite[itemNo];
                                 getItemIamge.gameObject.SetActive(true);
                                 int crNo = space2GotItemList.Count - 1;
@@ -234,40 +252,189 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    public void Toilet()
+    {
+        currentSpaceNo = 1;
+    }
+    public void AIsle4F()
+    {
+        currentSpaceNo = 2;
+    }
+    public void Coffer()
+    {
+        currentSpaceNo = 3;
+    }
+    public void SetZero()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+    public AudioClip openJail;
+    public AudioClip punch;
+    public AudioClip dooropen;
+    public AudioClip pressbtn;
+    public AudioClip usekey;
+    public AudioClip usewater;
+    public AudioClip poorwater;
+    public AudioClip drainwater;
+    public AudioClip rotatedial;
+    public AudioClip wrongSound;
+    public AudioClip Do;
+    public AudioClip Re;
+    public AudioClip Mi;
+    public AudioClip Sol;
+    public AudioClip Ra;
+    public AudioClip SoS;
+    public void DoSound()
+    {
+        audiosource.clip = Do;
+        audiosource.Play();
+    }
+    public void ReSound()
+    {
+        audiosource.clip = Re;
+        audiosource.Play();
+    }
+    public void MiSound()
+    {
+        audiosource.clip = Mi;
+        audiosource.Play();
+    }
+    public void SolSound()
+    {
+        audiosource.clip = Sol;
+        audiosource.Play();
+    }
+    public void RaSound()
+    {
+        audiosource.clip = Ra;
+        audiosource.Play();
+    }
     public void InteractCheck(int interactNo)
     {
         currentInteractNo = interactNo;
         if (currentItemNo == currentInteractNo)
         {
+            Debug.Log("currentspaceNo" + currentSpaceNo);
+            Debug.Log("cureentItemNo" + currentItemNo);
+            Debug.Log("currentInteractNo" + currentInteractNo);
             switch (currentInteractNo)
             {
                 case 0:
                     break;
                 case 1:
-                    CardUse();
+                    audiosource.clip = dooropen;
+                    audiosource.Play();
+                    Invoke("CardUse", 1f);
                     break;
                 case 2:
-                    WaterBasketUse();
+                    audiosource.clip = usewater;
+                    audiosource.Play();
+                    Invoke("WaterBasketUse", 1f);
                     break;
                 case 3:
-                    DduruUse();
+                    audiosource.clip = drainwater;
+                    audiosource.Play();
+                    Invoke("DduruUse",1f);
                     break;
                 case 4:
-                    FillSink();
+                    audiosource.clip = poorwater;
+                    audiosource.Play();
+                    Invoke("FillSink", 1f);
+                    break;
+                case 5:
+                    DialKey();
+                    break;
+                case 6:
+                    audiosource.clip = pressbtn;
+                    audiosource.Play();
+                    NewKey();
+                    break;
+                case 7:
+                    Experiment();
+                    break;
+                case 8:
+                    Battery();
+                    break;
+                case 9:
+                    SOS();
+                    break;
+                case 10:
+                    BatteryOn();
+                    break;
+                case 11:
+                    Pendant();
                     break;
             }
-            for (int i = 0; i < 8; i++)
+            Debug.Log("itemButton.l = " + itemButton.Length);
+            for (int i = 0; i < itemButton.Length; i++)
             {
+                Debug.Log("itemButton" + i);
                 itemButton[i].GetComponent<Image>().color = Color.white;
             }
         }
         else
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < itemButton.Length; i++)
             {
                 itemButton[i].GetComponent<Image>().color = Color.white;
             }
         }
+    }
+    public GameObject ImageOn;
+    public void Pendant()
+    {
+        ImageOn.SetActive(true);
+    }
+    public GameObject Fill;
+    public GameObject batteryon;
+    public GameObject GoToEnding;
+    public void BatteryOn()
+    {
+        Fill.SetActive(true);
+        batteryon.SetActive(true);
+        GoToEnding.SetActive(true);
+    }
+    public GameObject BImage;
+    public void Experiment()
+    {
+        before[5].sprite = changeImage[8];
+        before[5].GetComponent<RectTransform>().sizeDelta = new Vector2(445, 445);
+        before[5].GetComponent<RectTransform>().anchoredPosition = new Vector3(-70, 130, 0);
+        BImage.SetActive(true);
+    }
+    public GameObject AImage;
+    public GameObject CImage;
+    public GameObject battery;
+    public void Battery()
+    {
+        AImage.SetActive(false);
+        CImage.SetActive(true);
+        battery.SetActive(true);
+    }
+    public GameObject TB10;
+    public void SOS()
+    {
+        audiosource.clip = SoS;
+        audiosource.Play();
+        ImageOn.SetActive(true);
+        batteryon.SetActive(true);
+        TB10.SetActive(true);
+    }
+    public void WrongSound()
+    {
+        audiosource.clip = wrongSound;
+        audiosource.Play();
+    }
+    public void RotateDialSound()
+    {
+        audiosource.clip = rotatedial;
+        audiosource.Play();
+    }
+    public void CheckUse()
+    {
+        Debug.Log("currentItemNo" + currentItemNo);
+        itemButton[currentItemNo].button.interactable = false;
+        itemButton[currentItemNo].itemIcon.sprite = itemSprite[0];
     }
     public GameObject handle;
     public GameObject clear;
@@ -295,6 +462,7 @@ public class GameManager : MonoBehaviour
         before[2].GetComponent<RectTransform>().anchoredPosition = new Vector3(-60, -100, 0);
         keyActive.SetActive(true);
     }
+    public GameObject sinkbutton;
     public GameObject water;
     public GameObject key;
     public GameObject dirty;
@@ -307,7 +475,24 @@ public class GameManager : MonoBehaviour
         key.SetActive(true);
         dirty.SetActive(true);
     }
-   
+    public GameObject Activate;
+    public GameObject dial1;
+    public void DialKey()
+    {
+        before[3].sprite = GameManager.Instance.changeImage[2];
+        before[3].GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
+        Activate.SetActive(false);
+    }
+    public GameObject aisle4F;
+    public GameObject coffer;
+    public GameObject Fade;
+    public void NewKey()
+    {
+        aisle4F.SetActive(false);
+        coffer.SetActive(true);
+        Fade.SetActive(false);
+        Fade.SetActive(true);
+    }
     public void TalkTexting(string dial)
     {
         talkGUI.TalkText(dial);
@@ -315,20 +500,25 @@ public class GameManager : MonoBehaviour
         isTexting = true;
         Invoke("TalkGUIOff", 1.5f);
     }
-
+    public void JailSound()
+    {
+        audiosource.clip = openJail;
+        audiosource.Play();
+    }
     void TalkGUIOff()
     {
         isTexting = false;
         getItemIamge.gameObject.SetActive(false);
         talkGUI.gameObject.SetActive(false);
     }
-
+   
     public int buttoncnt1;
     public int buttoncnt2;
     public int buttoncnt3;
     public int buttoncnt4;
     public bool isDialClear;
     public GameObject dialActivate;
+   
     void Dialcheck()
     {
         if (buttoncnt1 % 24 == 5)
@@ -342,6 +532,7 @@ public class GameManager : MonoBehaviour
                         dial.SetActive(false);
                         dialActivate.SetActive(false);
                         isDialClear = true;
+                        PlayerPrefs.SetInt("isDialClear", 1);
                     }
                 }
             }

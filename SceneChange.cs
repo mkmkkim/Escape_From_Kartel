@@ -14,7 +14,14 @@ public class SceneChange : MonoBehaviour
     {
         SceneManager.LoadScene("StoryScene");
     }
-
+    public void ChangeNoahStory()
+    {
+        SceneManager.LoadScene("NoahStoryScene");
+    }
+    public void ChangeSiren()
+    {
+        SceneManager.LoadScene("SirenScene");
+    }
     public void ChangePlayFive()
     {
         SceneManager.LoadScene("5FScene");
@@ -29,7 +36,10 @@ public class SceneChange : MonoBehaviour
     {
         SceneManager.LoadScene("3FScene");
     }
-
+    public void ChangePlayStair()
+    {
+        SceneManager.LoadScene("3FAisleScene");
+    }
     public void ChangePlayTwo()
     {
         SceneManager.LoadScene("2FScene");
@@ -37,5 +47,9 @@ public class SceneChange : MonoBehaviour
     public void ChangePlayOne()
     {
         SceneManager.LoadScene("1FScene");
+    }
+    public void ChangeEnding()
+    {
+        SceneManager.LoadScene("EndingScene");
     }
 }

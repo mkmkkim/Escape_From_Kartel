@@ -18,11 +18,12 @@ public class TouchArea : MonoBehaviour
         touchArea = GetComponent<Image>();
         //       touchArea.enabled = false;
     }
-
     public void TouchedButton()
     {
         if (GameManager.Instance.isGameStart)
         {
+            Debug.Log("이름 = " + gameObject.name);
+                
             GameManager.Instance.TouchCheck(spaceNo, itemNo, dialog_GetItem);
             this.gameObject.SetActive(false);
         }

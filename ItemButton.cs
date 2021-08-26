@@ -7,7 +7,7 @@ public class ItemButton : MonoBehaviour
     // Start is called before the first frame update
 
     public Button button;
-    Image itemIcon;
+    public Image itemIcon;
     public int itemNo;
     public int count;
     public bool isDoorOpen;
@@ -40,7 +40,6 @@ public class ItemButton : MonoBehaviour
             GameManager.Instance.isItemSelected = false;
             button.GetComponent<Image>().color = Color.white;
         }
-        
     }
     public void ItemButtonInit()
     {
