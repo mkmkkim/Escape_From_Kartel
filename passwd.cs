@@ -81,6 +81,7 @@ public class passwd : MonoBehaviour
     {
         if (numbering.text == passward)
         {
+            GameManager.Instance.JailSound();
             this.gameObject.SetActive(false);
             aisle_5F.gameObject.SetActive(true);
         }
