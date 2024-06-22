@@ -6,6 +6,4 @@
 * 사용 기술 및 툴 : C#, Unity2D, Adobe Photoshop, Illustrator</br>
 * 인원 : 2명</br>
 * 담당(기여도) : 게임 기획(80%), 개발(90%), 아트(30%)</br>
-![image](https://github.com/mkmkkim/Escape_From_Kartell/assets/74914390/04f7ddb9-fe71-484d-953c-292d9ce782f4)
-
-
+<img src="./img/sample.png">
